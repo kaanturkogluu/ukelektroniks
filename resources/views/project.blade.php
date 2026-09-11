@@ -46,12 +46,12 @@
                         <div class="portfolio-img rounded overflow-hidden position-relative" style="cursor: pointer; transition: transform 0.3s; height: 250px; background-color: #f8f9fa;">
                             @if(!empty($project->image))
                                 @if(str_starts_with($project->image, 'http://') || str_starts_with($project->image, 'https://') || str_starts_with($project->image, '/'))
-                                    <img class="img-fluid w-100 h-100" src="{{ $project->image }}" alt="{{ $project->title }}" style="object-fit: cover; object-position: center;">
+                                    <img class="img-fluid w-100 h-100" src="{{ $project->image }}" alt="{{ $project->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @else
-                                    <img class="img-fluid w-100 h-100" src="{{ asset($project->image) }}" alt="{{ $project->title }}" style="object-fit: cover; object-position: center;">
+                                    <img class="img-fluid w-100 h-100" src="{{ asset($project->image) }}" alt="{{ $project->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @endif
                             @else
-                                <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $project->title }}" style="object-fit: cover; object-position: center;">
+                                <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $project->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                             @endif
                             <div class="portfolio-btn">
                                 <span class="btn btn-lg-square btn-outline-light rounded-circle mx-1"><i class="fa fa-eye"></i></span>
@@ -81,7 +81,7 @@
             <div class="row g-0 mx-lg-0">
                 <div class="col-lg-6 ps-lg-0 wow fadeIn" data-wow-delay="0.1s" style="min-height: 400px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/quote.jpg') }}" style="object-fit: cover;" alt="">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/quote.jpg') }}" loading="lazy" decoding="async" style="object-fit: cover;" alt="UK Elektronik Fiyat Teklifi">
                     </div>
                 </div>
                 <div class="col-lg-6 quote-text py-5 wow fadeIn" data-wow-delay="0.5s">

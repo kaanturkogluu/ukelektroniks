@@ -8,7 +8,7 @@
         <div class="owl-carousel header-carousel position-relative" style="height: calc(100vh - 105px);">
             @forelse($sliders as $slider)
             <div class="owl-carousel-item position-relative" data-dot="<img src='{{ str_starts_with($slider->image, 'http://') || str_starts_with($slider->image, 'https://') ? $slider->image : asset($slider->image) }}'>" style="height: calc(100vh - 105px);">
-                <img class="img-fluid" src="{{ str_starts_with($slider->image, 'http://') || str_starts_with($slider->image, 'https://') ? $slider->image : asset($slider->image) }}" alt="{{ $slider->title }}" style="width: 100%; height: calc(100vh - 105px); object-fit: cover;">
+                <img class="img-fluid" src="{{ str_starts_with($slider->image, 'http://') || str_starts_with($slider->image, 'https://') ? $slider->image : asset($slider->image) }}" alt="{{ $slider->title }}" {{ $loop->first ? 'fetchpriority=high' : 'loading=lazy' }} decoding="async" style="width: 100%; height: calc(100vh - 105px); object-fit: cover;">
                 <div class="owl-carousel-inner" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center;">
                     <div class="container">
                         <div class="row justify-content-start">
@@ -91,7 +91,7 @@
             <div class="row g-0 mx-lg-0">
                 <div class="col-lg-6 ps-lg-0 wow fadeIn" data-wow-delay="0.1s" style="min-height: 400px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/about.jpg') }}" style="object-fit: cover;" alt="">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/about.jpg') }}" loading="lazy" decoding="async" style="object-fit: cover;" alt="UK Elektronik Hakkımızda">
                     </div>
                 </div>
                 <div class="col-lg-6 about-text py-5 wow fadeIn" data-wow-delay="0.5s">
@@ -133,12 +133,12 @@
                             <div style="height: 250px; background-color: #f8f9fa; overflow: hidden;">
                                 @if(!empty($service->image))
                                     @if(str_starts_with($service->image, 'http://') || str_starts_with($service->image, 'https://'))
-                                        <img class="img-fluid w-100 h-100" src="{{ $service->image }}" alt="{{ $service->title }}" style="object-fit: cover; object-position: center;">
+                                        <img class="img-fluid w-100 h-100" src="{{ $service->image }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                     @else
-                                        <img class="img-fluid w-100 h-100" src="{{ asset($service->image) }}" alt="{{ $service->title }}" style="object-fit: cover; object-position: center;">
+                                        <img class="img-fluid w-100 h-100" src="{{ asset($service->image) }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                     @endif
                                 @else
-                                    <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $service->title }}" style="object-fit: cover; object-position: center;">
+                                    <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @endif
                             </div>
                             <div class="position-relative p-4">
@@ -227,7 +227,7 @@
                 </div>
                 <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/feature.jpg') }}" style="object-fit: cover;" alt="">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/feature.jpg') }}" loading="lazy" decoding="async" style="object-fit: cover;" alt="Güneş Enerjisi Sistemleri">
                     </div>
                 </div>
             </div>
@@ -262,12 +262,12 @@
                         <div class="portfolio-img rounded overflow-hidden" style="cursor: pointer; height: 250px; background-color: #f8f9fa;">
                             @if(!empty($project->image))
                                 @if(str_starts_with($project->image, 'http://') || str_starts_with($project->image, 'https://') || str_starts_with($project->image, '/'))
-                                    <img class="img-fluid w-100 h-100" src="{{ $project->image }}" alt="{{ $project->title }}" style="object-fit: cover; object-position: center;">
+                                    <img class="img-fluid w-100 h-100" src="{{ $project->image }}" alt="{{ $project->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @else
-                                    <img class="img-fluid w-100 h-100" src="{{ asset($project->image) }}" alt="{{ $project->title }}" style="object-fit: cover; object-position: center;">
+                                    <img class="img-fluid w-100 h-100" src="{{ asset($project->image) }}" alt="{{ $project->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @endif
                             @else
-                                <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $project->title }}" style="object-fit: cover; object-position: center;">
+                                <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $project->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                             @endif
                         </div>
                         <div class="pt-3">
@@ -307,7 +307,7 @@
                                     $imageUrl = asset('img/team-1.jpg');
                                 }
                             @endphp
-                            <img class="img-fluid w-75" src="{{ $imageUrl }}" alt="{{ $team->name }}">
+                            <img class="img-fluid w-75" src="{{ $imageUrl }}" alt="{{ $team->name }}" loading="lazy" decoding="async">
                             <div class="team-social w-25">
                                 @if($team->facebook)
                                 <a class="btn btn-lg-square btn-outline-primary rounded-circle mt-3" href="{{ $team->facebook }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -353,10 +353,10 @@
                     <div class="partner-item p-4 rounded bg-white shadow-sm h-100 d-flex align-items-center justify-content-center" style="transition: all 0.3s ease-in-out; border: 1px solid #eee;">
                         @if($partner->link)
                             <a href="{{ $partner->link }}" target="_blank" class="d-block w-100 h-100 d-flex align-items-center justify-content-center">
-                                <img class="img-fluid" src="{{ str_starts_with($partner->logo, 'http') ? $partner->logo : asset($partner->logo) }}" alt="{{ $partner->name }}" style="max-height: 60px; width: auto;">
+                                <img class="img-fluid" src="{{ str_starts_with($partner->logo, 'http') ? $partner->logo : asset($partner->logo) }}" alt="{{ $partner->name }}" loading="lazy" decoding="async" style="max-height: 60px; width: auto;">
                             </a>
                         @else
-                            <img class="img-fluid" src="{{ str_starts_with($partner->logo, 'http') ? $partner->logo : asset($partner->logo) }}" alt="{{ $partner->name }}" style="max-height: 60px; width: auto;">
+                            <img class="img-fluid" src="{{ str_starts_with($partner->logo, 'http') ? $partner->logo : asset($partner->logo) }}" alt="{{ $partner->name }}" loading="lazy" decoding="async" style="max-height: 60px; width: auto;">
                         @endif
                     </div>
                 </div>

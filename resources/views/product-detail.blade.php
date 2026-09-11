@@ -30,12 +30,12 @@
                     <div class="mb-4">
                         @if(!empty($product['image']))
                             @if(str_starts_with($product['image'], 'http://') || str_starts_with($product['image'], 'https://') || str_starts_with($product['image'], '/'))
-                                <img class="img-fluid rounded w-100 product-detail-image" src="{{ $product['image'] }}" alt="{{ $product['name'] }}">
+                                <img class="img-fluid rounded w-100 product-detail-image" src="{{ $product['image'] }}" alt="{{ $product['name'] }}" fetchpriority="high" decoding="async">
                             @else
-                                <img class="img-fluid rounded w-100 product-detail-image" src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}">
+                                <img class="img-fluid rounded w-100 product-detail-image" src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}" fetchpriority="high" decoding="async">
                             @endif
                         @else
-                            <img class="img-fluid rounded w-100 product-detail-image" src="{{ asset('img/img-600x400-1.jpg') }}" alt="{{ $product['name'] }}">
+                            <img class="img-fluid rounded w-100 product-detail-image" src="{{ asset('img/img-600x400-1.jpg') }}" alt="{{ $product['name'] }}" fetchpriority="high" decoding="async">
                         @endif
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                             <a href="{{ route('product.detail', $sp['slug']) }}" class="text-decoration-none">
                                 <div class="bg-white rounded overflow-hidden shadow-sm h-100" style="transition: transform 0.3s, box-shadow 0.3s;">
                                     <div class="position-relative" style="height: 160px; background-color: #f8f9fa; overflow: hidden;">
-                                        <img class="img-fluid w-100 h-100" src="{{ str_starts_with($sp['image'], 'http') ? $sp['image'] : asset($sp['image']) }}" alt="{{ $sp['name'] }}" style="object-fit: cover; object-position: center;">
+                                        <img class="img-fluid w-100 h-100" src="{{ str_starts_with($sp['image'], 'http') ? $sp['image'] : asset($sp['image']) }}" alt="{{ $sp['name'] }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                     </div>
                                     <div class="p-3">
                                         <h6 class="mb-0 text-dark small text-truncate" title="{{ $sp['name'] }}">{{ $sp['name'] }}</h6>

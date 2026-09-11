@@ -29,6 +29,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://code.jquery.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet"> 
 
     <!-- Icon Font Stylesheet -->
@@ -57,6 +60,21 @@
             <span class="sr-only">Yükleniyor...</span>
         </div>
     </div>
+    <script>
+        (function() {
+            var hideSpinner = function() {
+                var s = document.getElementById('spinner');
+                if (s) { s.classList.remove('show'); s.style.display = 'none'; }
+            };
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                setTimeout(hideSpinner, 60);
+            } else {
+                document.addEventListener('DOMContentLoaded', hideSpinner);
+                window.addEventListener('load', hideSpinner);
+            }
+            setTimeout(hideSpinner, 800);
+        })();
+    </script>
     <!-- Spinner End -->
 
     <!-- Topbar Start -->
@@ -374,10 +392,12 @@
                 <div class="col-lg-4 col-md-6">
                     <h5 class="text-white mb-4">{{ __('common.projects') }}</h5>
                     @php
-                        $footerProjects = \App\Models\Project::where('is_active', true)
-                            ->orderBy('created_at', 'desc')
-                            ->limit(6)
-                            ->get();
+                        $footerProjects = \Illuminate\Support\Facades\Cache::remember('footer_projects_active', 1800, function () {
+                            return \App\Models\Project::where('is_active', true)
+                                ->orderBy('created_at', 'desc')
+                                ->limit(6)
+                                ->get();
+                        });
                     @endphp
                     @if($footerProjects->count() > 0)
                         @foreach($footerProjects as $project)

@@ -33,12 +33,12 @@
                             <div style="height: 250px; background-color: #f8f9fa; overflow: hidden;">
                                 @if(!empty($service->image))
                                     @if(str_starts_with($service->image, 'http://') || str_starts_with($service->image, 'https://'))
-                                        <img class="img-fluid w-100 h-100" src="{{ $service->image }}" alt="{{ $service->title }}" style="object-fit: cover; object-position: center;">
+                                        <img class="img-fluid w-100 h-100" src="{{ $service->image }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                     @else
-                                        <img class="img-fluid w-100 h-100" src="{{ asset($service->image) }}" alt="{{ $service->title }}" style="object-fit: cover; object-position: center;">
+                                        <img class="img-fluid w-100 h-100" src="{{ asset($service->image) }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                     @endif
                                 @else
-                                    <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $service->title }}" style="object-fit: cover; object-position: center;">
+                                    <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @endif
                             </div>
                             <div class="position-relative p-4">
@@ -127,7 +127,7 @@
                 </div>
                 <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/feature.jpg') }}" style="object-fit: cover;" alt="">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{{ asset('img/feature.jpg') }}" loading="lazy" decoding="async" style="object-fit: cover;" alt="Güneş Enerjisi Çözümleri">
                     </div>
                 </div>
             </div>

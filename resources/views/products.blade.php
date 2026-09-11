@@ -71,12 +71,12 @@
                                     <div class="position-relative" style="height: 250px; background-color: #f8f9fa; overflow: hidden;">
                                         @if($product->image)
                                             @if(str_starts_with($product->image, 'http://') || str_starts_with($product->image, 'https://') || str_starts_with($product->image, '/'))
-                                                <img class="img-fluid w-100 h-100" src="{{ $product->image }}" alt="{{ $product->name }}" style="object-fit: cover; object-position: center;">
+                                                <img class="img-fluid w-100 h-100" src="{{ $product->image }}" alt="{{ $product->name }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                             @else
-                                                <img class="img-fluid w-100 h-100" src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="object-fit: cover; object-position: center;">
+                                                <img class="img-fluid w-100 h-100" src="{{ asset($product->image) }}" alt="{{ $product->name }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                             @endif
                                         @else
-                                            <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-1.jpg') }}" alt="{{ $product->name }}" style="object-fit: cover; object-position: center;">
+                                            <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-1.jpg') }}" alt="{{ $product->name }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                         @endif
                                         @if($product->category && is_object($product->category))
                                         <div class="position-absolute top-0 end-0 m-2">

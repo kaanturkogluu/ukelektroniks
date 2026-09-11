@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Service;
@@ -25,35 +26,18 @@ Route::get('/lang', function () {
 })->name('lang.switch');
 
 Route::get('/', function () {
-    $services = Service::where('is_active', true)
-        ->orderBy('sort_order')
-        ->limit(6)
-        ->get();
-    $projects = Project::with('category')
-        ->where('is_active', true)
-        ->orderBy('sort_order')
-        ->limit(6)
-        ->get();
- 
-    $teams = Team::where('is_active', true)
-        ->orderBy('sort_order')
-        ->limit(6)
-        ->get();
-    
-    $partners = Partner::where('is_active', true)
-        ->orderBy('sort_order')
-        ->get();
-    
-    $categories = ProjectCategory::where('is_active', true)
-        ->orderBy('sort_order')
-        ->get();
-    
-    $sliders = \App\Models\Slider::where('is_active', true)
-        ->orderBy('sort_order')
-        ->get();
-    
-    return view('home', compact('services', 'projects', 'teams', 'categories', 'sliders', 'partners'));
+    $homeData = Cache::remember('home_page_data', 600, function () {
+        return [
+            'services' => Service::where('is_active', true)->orderBy('sort_order')->limit(6)->get(),
+            'projects' => Project::with('category')->where('is_active', true)->orderBy('sort_order')->limit(6)->get(),
+            'teams' => Team::where('is_active', true)->orderBy('sort_order')->limit(6)->get(),
+            'partners' => Partner::where('is_active', true)->orderBy('sort_order')->get(),
+            'categories' => ProjectCategory::where('is_active', true)->orderBy('sort_order')->get(),
+            'sliders' => \App\Models\Slider::where('is_active', true)->orderBy('sort_order')->get(),
+        ];
+    });
 
+    return view('home', $homeData);
 })->name('home');
 
 Route::get('/about', function () {
@@ -205,13 +189,15 @@ Route::get('/products', function () {
     
     $products = $query->orderBy('sort_order')->paginate(20);
     
-    $categories = ProductCategory::where('is_active', true)
-        ->withCount(['products' => function($query) {
-            $query->where('is_active', true);
-        }])
-        ->having('products_count', '>', 0)
-        ->orderBy('sort_order')
-        ->get();
+    $categories = Cache::remember('product_categories_with_count', 1800, function () {
+        return ProductCategory::where('is_active', true)
+            ->withCount(['products' => function($query) {
+                $query->where('is_active', true);
+            }])
+            ->having('products_count', '>', 0)
+            ->orderBy('sort_order')
+            ->get();
+    });
     
     $selectedCategory = $categorySlug ? ProductCategory::where('slug', $categorySlug)->first() : null;
     
