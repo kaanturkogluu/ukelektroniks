@@ -474,3 +474,11 @@ Route::get('/faq', function () {
     
     return view('faq', compact('faqs'));
 })->name('faq');
+
+// SEO & Product Feeds
+Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/merchant.xml', [\App\Http\Controllers\SeoController::class, 'merchantFeed'])->name('merchant.feed');
+Route::get('/merchant-center.xml', [\App\Http\Controllers\SeoController::class, 'merchantFeed']);
+Route::get('/google-merchant.xml', [\App\Http\Controllers\SeoController::class, 'merchantFeed']);
+Route::get('/robots.txt', [\App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
+

@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('title', $product['name'] . ' - UK Elektronik')
+@section('og_type', 'product')
+@section('og_image', !empty($product['image']) ? (str_starts_with($product['image'], 'http') ? $product['image'] : asset($product['image'])) : asset('uklogo.png'))
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($product['description'] ?? $product['name']), 160))
+
 
 @section('content')
     <!-- Page Header Start -->
@@ -271,4 +275,28 @@
     }
 </style>
 @endsection
+
+@push('scripts')
+<script type="application/ld+json">
+{
+  "{{ '@' }}context": "https://schema.org/",
+  "{{ '@' }}type": "Product",
+  "name": "{{ addslashes($product['name']) }}",
+  "image": "{{ !empty($product['image']) ? (str_starts_with($product['image'], 'http') ? $product['image'] : asset($product['image'])) : asset('uklogo.png') }}",
+  "description": "{{ addslashes(\Illuminate\Support\Str::limit(strip_tags($product['description'] ?? $product['name']), 300)) }}",
+  "brand": {
+    "{{ '@' }}type": "Brand",
+    "name": "{{ addslashes($product['brand'] ?? 'UK Elektronik') }}"
+  },
+  "offers": {
+    "{{ '@' }}type": "Offer",
+    "url": "{{ url()->current() }}",
+    "priceCurrency": "TRY",
+    "price": "0.00",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+@endpush
+
 

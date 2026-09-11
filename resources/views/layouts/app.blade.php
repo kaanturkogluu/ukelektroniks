@@ -5,8 +5,23 @@
     <meta charset="utf-8">
     <title>@yield('title', 'UK Elektronik - Güneş ve Yenilenebilir Enerji')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="@yield('meta_keywords', \App\Models\Setting::get('site_description', 'dörtyol güneş paneli, solar inverter, güneş enerjisi sistemleri, UK Elektronik, hatay güneş paneli'))" name="keywords">
+    <meta content="@yield('meta_description', 'UK Elektronik - Güneş enerjisi sistemleri, solar inverterler, DC pompalar, solar sürücüler ve bataryalar.')" name="description">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'UK Elektronik - Güneş ve Yenilenebilir Enerji')">
+    <meta property="og:description" content="@yield('meta_description', 'UK Elektronik - Güneş enerjisi ve solar sistemler')">
+    <meta property="og:image" content="@yield('og_image', asset('uklogo.png'))">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="@yield('title', 'UK Elektronik - Güneş ve Yenilenebilir Enerji')">
+    <meta name="twitter:description" content="@yield('meta_description', 'UK Elektronik - Güneş enerjisi ve solar sistemler')">
+    <meta name="twitter:image" content="@yield('og_image', asset('uklogo.png'))">
 
     <!-- Favicon -->
     <link href="{{ asset('favicon.ico') }}" rel="icon">
@@ -404,6 +419,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
     @yield('scripts')
+    @stack('scripts')
     
     <style>
         .contact-link-topbar {
