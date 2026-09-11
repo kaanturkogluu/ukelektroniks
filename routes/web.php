@@ -190,9 +190,17 @@ Route::get('/products', function () {
         ->where('is_active', true);
     
     if ($categorySlug) {
-        $query->whereHas('category', function($q) use ($categorySlug) {
-            $q->where('slug', $categorySlug);
-        });
+        $matchedCategory = ProductCategory::where('slug', $categorySlug)->first();
+        if ($matchedCategory) {
+            $categoryIds = ProductCategory::where('parent_id', $matchedCategory->id)
+                ->pluck('id')
+                ->push($matchedCategory->id);
+            $query->whereIn('category_id', $categoryIds);
+        } else {
+            $query->whereHas('category', function($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
     }
     
     $products = $query->orderBy('sort_order')->paginate(20);
