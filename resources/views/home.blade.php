@@ -6,7 +6,7 @@
         <!-- Hero Video Entrance Start (cw-enerji style) -->
     <div class="hero-video-wrapper position-relative overflow-hidden" id="heroEntrance">
         <video class="hero-bg-video" autoplay muted loop playsinline poster="{{ asset('img/gp.webp') }}" preload="auto">
-            <source src="{{ asset('video/solar-hero.mp4') }}" type="video/mp4">
+            <source src="{{ asset('video/solar-hero.mp4') }}?v={{ @filemtime(public_path('video/solar-hero.mp4')) }}" type="video/mp4">
         </video>
         
         <!-- Dark gradient overlay for readability -->
