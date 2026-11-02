@@ -185,8 +185,7 @@
             <div class="container d-flex flex-column align-items-center justify-content-center">
                 <a href="{{ route('home') }}" class="cw-toplogo-brand d-inline-flex flex-column align-items-center text-decoration-none">
                     <img src="{{ asset('uklogo.png') }}" alt="UK Elektronik Güneş Enerjisi" class="cw-logo-img">
-                    <span class="cw-logo-slogan">Güneşten Elektrik</span>
-                </a>
+                    </a>
             </div>
         </div>
 
@@ -196,8 +195,7 @@
                 <!-- Mobile Brand in Center (visible only on mobile) -->
                 <a href="{{ route('home') }}" class="navbar-brand d-lg-none mx-auto d-flex flex-column align-items-center py-2">
                     <img src="{{ asset('uklogo.png') }}" alt="UK Elektronik" style="max-height: 48px; width: auto;">
-                    <span style="font-size: 9px; letter-spacing: 2px; color: #ffc107; font-weight: 700; text-transform: uppercase;">Güneşten Elektrik</span>
-                </a>
+                    </a>
 
                 <button type="button" class="navbar-toggler position-absolute end-0 me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Menüyü Aç/Kapat" style="border-color: rgba(255, 255, 255, 0.5);">
                     <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>

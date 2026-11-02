@@ -25,12 +25,12 @@
                 <h6 class="text-primary">{{ __('common.our_services') }}</h6>
                 <h1 class="mb-4">{{ __('common.renewable_energy_leader') }}</h1>
             </div>
-            <div class="row g-4">
+            <div class="row g-4 align-items-stretch">
                 @forelse($services as $index => $service)
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{{ ($index % 3) * 0.2 }}s">
-                    <a href="{{ route('service.detail', $service->slug) }}" class="text-decoration-none">
-                        <div class="service-item rounded overflow-hidden" style="cursor: pointer; transition: transform 0.3s;">
-                            <div style="height: 250px; background-color: #f8f9fa; overflow: hidden;">
+                <div class="col-md-6 col-lg-4 d-flex wow fadeInUp" data-wow-delay="{{ ($index % 3) * 0.2 }}s">
+                    <a href="{{ route('service.detail', $service->slug) }}" class="text-decoration-none w-100 d-flex flex-column">
+                        <div class="service-item rounded overflow-hidden d-flex flex-column h-100 bg-white" style="cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;">
+                            <div style="height: 240px; background-color: #f8f9fa; overflow: hidden; flex-shrink: 0;">
                                 @if(!empty($service->image))
                                     @if(str_starts_with($service->image, 'http://') || str_starts_with($service->image, 'https://'))
                                         <img class="img-fluid w-100 h-100" src="{{ $service->image }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
@@ -41,19 +41,23 @@
                                     <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @endif
                             </div>
-                            <div class="position-relative p-4">
-                                @if($service->icon)
-                                <div class="d-flex align-items-center mb-3">
+                            <div class="position-relative p-4 d-flex flex-column flex-grow-1">
+                                <div class="mb-3" style="min-height: 54px; display: flex; align-items: center;">
+                                    @if($service->icon)
                                     <div class="btn-lg-square bg-primary rounded-circle me-3 flex-shrink-0">
                                         <i class="fa {{ $service->icon }} text-white"></i>
                                     </div>
-                                    <h4 class="mb-0" style="color: #1A2A36;">{{ $service->title }}</h4>
+                                    @endif
+                                    <h4 class="mb-0" style="color: #1A2A36; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ $service->title }}
+                                    </h4>
                                 </div>
-                                @else
-                                <h4 class="mb-3" style="color: #1A2A36;">{{ $service->title }}</h4>
-                                @endif
-                                <p class="service-card-desc" style="color: #6c757d;">{{ $service->short_description }}</p>
-                                <span class="small fw-medium text-primary">Detayları Gör<i class="fa fa-arrow-right ms-2"></i></span>
+                                <p class="service-card-desc flex-grow-1 mb-4" style="color: #6c757d; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.5em; line-height: 1.5;">
+                                    {{ $service->short_description }}
+                                </p>
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <span class="small fw-bold text-primary">Detayları Gör<i class="fa fa-arrow-right ms-2"></i></span>
+                                </div>
                             </div>
                         </div>
                     </a>

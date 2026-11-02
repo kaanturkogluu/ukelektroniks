@@ -17,11 +17,6 @@
             <div class="container py-5">
                 <div class="row justify-content-center">
                     <div class="col-11 col-lg-10 col-xl-9">
-                        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 border border-white border-opacity-25 px-4 py-2 rounded-pill mb-4 animated fadeInDown" style="backdrop-filter: blur(8px);">
-                            <i class="fa fa-sun text-warning"></i>
-                            <span class="text-uppercase fw-bold text-warning" style="letter-spacing: 2.5px; font-size: 0.82rem;">UK ELEKTRONİK // GÜNEŞTEN ELEKTRİK</span>
-                        </div>
-
                         <h1 class="hero-main-title display-3 fw-bold text-white mb-4 animated slideInDown">
                             Geleceğin Enerjisini <span class="text-warning">Bugünden</span> Çatınıza Taşıyoruz
                         </h1>
@@ -42,25 +37,7 @@
                             </a>
                         </div>
 
-                        <!-- Stats & Highlights -->
-                        <div class="row g-3 justify-content-center mt-5 pt-4 border-top border-white border-opacity-15 d-none d-md-flex">
-                            <div class="col-md-3">
-                                <h3 class="text-warning fw-bold mb-1">%75+</h3>
-                                <small class="text-white text-opacity-75">Isı Pompası Tasarrufu</small>
-                            </div>
-                            <div class="col-md-3">
-                                <h3 class="text-warning fw-bold mb-1">A+++</h3>
-                                <small class="text-white text-opacity-75">Maksimum Verimlilik</small>
-                            </div>
-                            <div class="col-md-3">
-                                <h3 class="text-warning fw-bold mb-1">365 Gün</h3>
-                                <small class="text-white text-opacity-75">Kesintisiz Sıcak Su & Isıtma</small>
-                            </div>
-                            <div class="col-md-3">
-                                <h3 class="text-warning fw-bold mb-1">100%</h3>
-                                <small class="text-white text-opacity-75">Mühendislik Güvencesi</small>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -268,12 +245,12 @@
                 <h6 class="text-primary">{{ __('common.our_services') }}</h6>
                 <h1 class="mb-4">Yenilenebilir Enerji Dünyasında Öncüyüz</h1>
             </div>
-            <div class="row g-4">
+            <div class="row g-4 align-items-stretch">
                 @forelse($services as $index => $service)
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="{{ ($index % 3) * 0.2 + 0.1 }}s">
-                    <a href="{{ route('service.detail', $service->slug) }}" class="text-decoration-none">
-                        <div class="service-item rounded overflow-hidden" style="cursor: pointer; transition: transform 0.3s;">
-                            <div style="height: 250px; background-color: #f8f9fa; overflow: hidden;">
+                <div class="col-md-6 col-lg-4 d-flex wow fadeInUp" data-wow-delay="{{ ($index % 3) * 0.2 + 0.1 }}s">
+                    <a href="{{ route('service.detail', $service->slug) }}" class="text-decoration-none w-100 d-flex flex-column">
+                        <div class="service-item rounded overflow-hidden d-flex flex-column h-100 bg-white" style="cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;">
+                            <div style="height: 240px; background-color: #f8f9fa; overflow: hidden; flex-shrink: 0;">
                                 @if(!empty($service->image))
                                     @if(str_starts_with($service->image, 'http://') || str_starts_with($service->image, 'https://'))
                                         <img class="img-fluid w-100 h-100" src="{{ $service->image }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
@@ -284,19 +261,23 @@
                                     <img class="img-fluid w-100 h-100" src="{{ asset('img/img-600x400-' . (($index % 6) + 1) . '.jpg') }}" alt="{{ $service->title }}" loading="lazy" decoding="async" style="object-fit: cover; object-position: center;">
                                 @endif
                             </div>
-                            <div class="position-relative p-4">
-                                @if($service->icon)
-                                <div class="d-flex align-items-center mb-3">
+                            <div class="position-relative p-4 d-flex flex-column flex-grow-1">
+                                <div class="mb-3" style="min-height: 54px; display: flex; align-items: center;">
+                                    @if($service->icon)
                                     <div class="btn-lg-square bg-primary rounded-circle me-3 flex-shrink-0">
                                         <i class="fa {{ $service->icon }} text-white"></i>
                                     </div>
-                                    <h4 class="mb-0" style="color: #1A2A36;">{{ $service->title }}</h4>
+                                    @endif
+                                    <h4 class="mb-0" style="color: #1A2A36; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ $service->title }}
+                                    </h4>
                                 </div>
-                                @else
-                                <h4 class="mb-3" style="color: #1A2A36;">{{ $service->title }}</h4>
-                                @endif
-                                <p style="color: #6c757d;">{{ $service->short_description }}</p>
-                                <span class="small fw-medium text-primary">{{ __('common.our_services') }}<i class="fa fa-arrow-right ms-2"></i></span>
+                                <p class="service-card-desc flex-grow-1 mb-4" style="color: #6c757d; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.5em; line-height: 1.5;">
+                                    {{ $service->short_description }}
+                                </p>
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <span class="small fw-bold text-primary">{{ __('common.our_services') }}<i class="fa fa-arrow-right ms-2"></i></span>
+                                </div>
                             </div>
                         </div>
                     </a>
