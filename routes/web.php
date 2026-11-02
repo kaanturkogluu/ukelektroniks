@@ -76,6 +76,12 @@ Route::get('/service/{slug}', function ($slug) {
     return view('service-detail', ['service' => $serviceData, 'slug' => $slug]);
 })->name('service.detail');
 
+Route::get('/ges-teklif-formu', function () {
+    $rawWhatsapp = \App\Models\Setting::get('product_whatsapp', '+905053967070');
+    $whatsappNumber = preg_replace('/[^0-9]/', '', $rawWhatsapp) ?: '905053967070';
+    return view('ges-teklif', compact('whatsappNumber'));
+})->name('ges.teklif');
+
 Route::get('/isi-pompasi', function () {
     $category = ProductCategory::where('slug', 'isi-pompasi')->first();
     $products = collect();

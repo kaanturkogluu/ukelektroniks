@@ -290,38 +290,522 @@
     </div>
     <!-- Product Series End -->
 
-    <!-- Solar + Heat Pump Integration Banner Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="bg-primary rounded-4 p-5 text-white position-relative overflow-hidden shadow-lg">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <h2 class="display-6 text-white fw-bold mb-3">Güneş Enerjisi (GES) + Isı Pompası = 0 TL Fatura!</h2>
-                        <p class="text-white-50 fs-5 mb-4">
-                            Çatınıza kuracağımız fotovoltaik güneş panelleri gün boyu elektrik üretir, ısı pompanız bu elektriği kullanarak evinizi ısıtır ve sıcak suyunuzu hazırlar. Şebekeye bağımlılığınızı ortadan kaldırın.
-                        </p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <a href="{{ route('contact') }}" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary">
-                                <i class="fa fa-envelope me-2"></i> Ücretsiz Keşif Talep Edin
-                            </a>
-                            <a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode('GES ve Isı Pompası entegre sistem hakkında bilgi almak istiyorum.') }}" target="_blank" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold">
-                                <i class="fab fa-whatsapp me-2"></i> WhatsApp Danışma
-                            </a>
+    <!-- Isı Pompası Ön Değerlendirme Formu Start -->
+    @php
+        $rawWhatsapp = \App\Models\Setting::get('product_whatsapp');
+        if (empty($rawWhatsapp)) {
+            $rawWhatsapp = \App\Models\Setting::get('display_phone', '+905053967070');
+        }
+        $targetWhatsapp = preg_replace('/[^0-9]/', '', $rawWhatsapp);
+        if (empty($targetWhatsapp)) {
+            $targetWhatsapp = '905053967070';
+        }
+    @endphp
+
+    <div class="container-xxl py-5" id="onDegerlendirmeFormu">
+        <div class="container" style="max-width: 860px;">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                <span class="badge bg-primary px-3 py-2 rounded-pill text-uppercase fw-bold mb-2">Hızlı & Kolay Keşif</span>
+                <h2 class="display-6 fw-bold">Isı Pompası Ön Değerlendirme Formu</h2>
+                <p class="text-muted">Doğru cihaz ve kapasiteyi seçebilmemiz için binanız ve kullanım alışkanlıklarınız hakkında bilgileri doldurun. Yanıtlarınız doğrudan <strong>WhatsApp</strong> üzerinden uzman mühendis ekibimize okunaklı bir rapor olarak iletilecektir.</p>
+            </div>
+
+            <form id="heatPumpEvalForm" class="evaluation-form" novalidate>
+                <!-- Bölüm: Müşteri Bilgileri -->
+                <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white">
+                    <h4 class="fw-bold text-primary mb-1"><i class="fa fa-user-circle me-2"></i>Müşteri Bilgileri</h4>
+                    <p class="text-muted small mb-4">Adınız ve telefon numaranız teklifinizi size ulaştırmamız için zorunludur.</p>
+                    
+                    <div class="mb-3 form-group-item" data-req="1">
+                        <label for="eval_ad" class="form-label fw-semibold">Müşteri Adı Soyadı <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-lg rounded-3" id="eval_ad" name="ad" placeholder="Adınız ve Soyadınız">
+                        <div class="invalid-feedback">Lütfen adınızı ve soyadınızı giriniz.</div>
+                    </div>
+
+                    <div class="mb-3 form-group-item" data-req="1">
+                        <label for="eval_tel" class="form-label fw-semibold">Müşteri Telefon Numarası <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control form-control-lg rounded-3" id="eval_tel" name="tel" placeholder="05XX XXX XX XX">
+                        <div class="invalid-feedback">Lütfen telefon numaranızı giriniz.</div>
+                    </div>
+
+                    <div class="mb-0 form-group-item">
+                        <label for="eval_adres" class="form-label fw-semibold">Adres / İl - İlçe</label>
+                        <textarea class="form-control rounded-3" id="eval_adres" name="adres" rows="2" placeholder="Örn: Hatay / Dörtyol veya adresiniz"></textarea>
+                    </div>
+                </div>
+
+                <!-- Bölüm 1: Bina ve Yapı Özellikleri -->
+                <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white">
+                    <h4 class="fw-bold text-primary mb-1"><i class="fa fa-home me-2"></i>1. Bina ve Yapı Özellikleri</h4>
+                    <p class="text-muted small mb-4">Binanın mimari ve alan bilgileri cihaz kapasitesinin belirlenmesi için gereklidir.</p>
+
+                    <div class="mb-4 form-group-item">
+                        <label for="eval_m2" class="form-label fw-semibold">Binanın toplam net kullanım alanı kaç metrekare (m²)?</label>
+                        <div class="input-group input-group-lg" style="max-width: 280px;">
+                            <input type="number" class="form-control rounded-start-3" id="eval_m2" name="m2" min="1" placeholder="Örn: 150">
+                            <span class="input-group-text rounded-end-3">m²</span>
                         </div>
                     </div>
-                    <div class="col-lg-4 text-center mt-4 mt-lg-0">
-                        <div class="p-4 bg-white rounded-circle d-inline-flex align-items-center justify-content-center shadow" style="width: 170px; height: 170px;">
-                            <div class="text-center">
-                                <span class="h1 fw-bold text-primary d-block mb-0">100%</span>
-                                <span class="small text-muted fw-bold">Temiz Enerji</span>
-                            </div>
+
+                    <div class="mb-4 form-group-item">
+                        <label for="eval_sehir" class="form-label fw-semibold">Binanın bulunduğu şehir ve bölge neresi?</label>
+                        <span class="form-text text-muted d-block mb-2">Kışın en düşük dış ortam sıcaklığını bilmek cihaz seçimi için kritiktir.</span>
+                        <input type="text" class="form-control form-control-lg rounded-3" id="eval_sehir" name="sehir" placeholder="Örn: Hatay Dörtyol / Kışın en düşük +5°C">
+                    </div>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Binanın yalıtım durumu nasıl? <span class="text-muted fw-normal">(Birden fazla seçilebilir)</span></label>
+                        <span class="form-text text-muted d-block mb-2">Duvarlarda mantolama var mı, camlar çift cam mı, çatı yalıtımı yapılmış mı?</span>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Duvarlarda mantolama var', 'Camlar çift cam', 'Çatı yalıtımı yapılmış', 'Hiçbiri', 'Bilmiyorum'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="checkbox" name="yalitim" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
                         </div>
                     </div>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Bina kaç katlı ve ısıtılacak alan tek bir kat mı yoksa müstakil bir villa mı?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Tek kat', 'Apartman dairesi', 'Çok katlı müstakil villa'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="kat" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-0 form-group-item">
+                        <label class="form-label fw-semibold d-block">Binanın tavan yüksekliği standart (2,70 – 2,80 m) mı yoksa asma kat/galeri boşluğu var mı?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Standart yükseklik', 'Asma kat / galeri boşluğu var'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="tavan" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bölüm 2: Isıtma ve Soğutma Sistemi -->
+                <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white">
+                    <h4 class="fw-bold text-primary mb-1"><i class="fa fa-fire me-2"></i>2. Mevcut veya Planlanan Isıtma/Soğutma Sistemi</h4>
+                    <p class="text-muted small mb-4">Uç birimlerin türü ısı pompasının ideal çıkış suyu sıcaklığını belirler.</p>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Yerden ısıtma (radyant) sistemi mi yoksa radyatör (petek) sistemi mi kullanılacak?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Yerden ısıtma', 'Radyatör (petek)', 'İkisi birlikte'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="dagitim" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-4 form-group-item conditional-field d-none" id="field_petek">
+                        <label class="form-label fw-semibold d-block">Radyatör ise peteklerinizin türü nedir?</label>
+                        <span class="form-text text-muted d-block mb-2">Isı pompaları düşük sıcaklıkta çalışan yerden ısıtmada en yüksek verimi verir.</span>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Alüminyum', 'Panel radyatör', 'Döküm'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="checkbox" name="petek" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Sistem sadece ısıtma için mi kullanılacak, yoksa yazın soğutma (klima etkisi) da isteniyor mu?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Sadece ısıtma', 'Isıtma ve soğutma'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="mod" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-0 form-group-item conditional-field d-none" id="field_fancoil">
+                        <label class="form-label fw-semibold d-block">Yazın soğutma isteniyorsa fancoil sistemi kurulacak mı?</label>
+                        <span class="form-text text-muted d-block mb-2">Yerden ısıtma borularından soğutma yapılması yoğuşma riski nedeniyle zordur; fancoil veya duvardan soğutma tercih edilir.</span>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Evet', 'Hayır', 'Henüz karar vermedim'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="fancoil" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bölüm 3: Kullanım Suyu ve Tüketim Alışkanlıkları -->
+                <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white">
+                    <h4 class="fw-bold text-primary mb-1"><i class="fa fa-shower me-2"></i>3. Kullanım Suyu (Boyler) ve Tüketim Alışkanlıkları</h4>
+                    <p class="text-muted small mb-4">Sıcak su ihtiyacına göre boyler hacmi ve cihaz seçimi optimize edilir.</p>
+
+                    <div class="mb-4 form-group-item">
+                        <label for="eval_kisi" class="form-label fw-semibold">Evde sürekli yaşayan kaç kişi var?</label>
+                        <span class="form-text text-muted d-block mb-2">Sıcak su ihtiyacını ve boyler hacmini belirlemek için.</span>
+                        <div class="input-group input-group-lg" style="max-width: 250px;">
+                            <input type="number" class="form-control rounded-start-3" id="eval_kisi" name="kisi" min="1" placeholder="Örn: 4">
+                            <span class="input-group-text rounded-end-3">Kişi</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Isı pompası aynı zamanda banyo/mutfak sıcak suyunu (kullanım sıcak suyu) da karşılayacak mı?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Evet', 'Hayır'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="skw" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-group-item">
+                        <label class="form-label fw-semibold d-block">Evde jakuzi, büyük küvet veya aynı anda çalışan birden fazla duş gibi yoğun sıcak su tüketen alanlar var mı?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Evet', 'Hayır'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="yogun" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-0 form-group-item conditional-field d-none" id="field_yogunnot">
+                        <label for="eval_yogunnot" class="form-label fw-semibold">Varsa kısaca belirtin</label>
+                        <textarea class="form-control rounded-3" id="eval_yogunnot" name="yogunnot" rows="2" placeholder="Örn: 2 ebeveyn banyosu ve 1 adet jakuzi bulunmaktadır"></textarea>
+                    </div>
+                </div>
+
+                <!-- Bölüm 4: Altyapı ve Kurulum Alanı -->
+                <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white">
+                    <h4 class="fw-bold text-primary mb-1"><i class="fa fa-bolt me-2"></i>4. Altyapı ve Kurulum Alanı</h4>
+                    <p class="text-muted small mb-4">Montaj konumu ve elektrik gücü uyumu gereklilikleridir.</p>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Evin elektrik altyapısı monofaze (220V) mi yoksa trifaze (380V) mi?</label>
+                        <span class="form-text text-muted d-block mb-2">Yüksek kapasiteli ısı pompaları trifaze elektrik gerektirir.</span>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Monofaze (220V)', 'Trifaze (380V)', 'Bilmiyorum'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="elk" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-4 form-group-item">
+                        <label class="form-label fw-semibold d-block">Dış üniteyi koymak için uygun bir bahçe, balkon veya teras alanı var mı?</label>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Bahçe', 'Balkon', 'Teras', 'Uygun alan yok'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="radio" name="dis" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-0 form-group-item">
+                        <label class="form-label fw-semibold d-block">Mevcut bir kazan, kombi veya güneş enerjisi sistemi var mı?</label>
+                        <span class="form-text text-muted d-block mb-2">Isı pompası hibrit olarak bu sistemlere entegre edilebilir.</span>
+                        <div class="d-flex flex-wrap gap-2 opt-group">
+                            @foreach(['Kazan', 'Kombi', 'Güneş enerjisi', 'Hiçbiri'] as $opt)
+                            <label class="custom-opt-btn">
+                                <input type="checkbox" name="mevcut" value="{{ $opt }}">
+                                <span>{{ $opt }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gönderim Alanı -->
+                <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 text-center bg-light">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mx-auto mb-3" style="width: 60px; height: 60px;">
+                        <i class="fab fa-whatsapp fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Ön Değerlendirmenizi Hemen Gönderin</h4>
+                    <p class="text-muted small mb-4 mx-auto" style="max-width: 600px;">
+                        Verdiğiniz yanıtlar düzenli bir rapor halinde <strong>WhatsApp</strong> üzerinden teknik ekibimize iletilir. Mühendislerimiz projenize en uygun cihazı ve fiyat teklifini hemen hazırlar.
+                    </p>
+                    
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <button type="button" id="btnSendWhatsapp" class="btn btn-success btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+                            <i class="fab fa-whatsapp fa-lg me-2"></i> WhatsApp ile Teklif Talebini Gönder
+                        </button>
+                        <button type="button" id="btnPreviewModal" class="btn btn-outline-dark btn-lg rounded-pill px-4 py-3 fw-semibold">
+                            <i class="fa fa-eye me-2"></i> Raporu Önizle
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Önizleme ve Kopyalama Kartı -->
+            <div id="evalPreviewBox" class="card border-0 shadow-lg rounded-4 p-4 mt-4 d-none bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-success mb-0"><i class="fab fa-whatsapp me-2"></i>Hazırlanan WhatsApp Mesaj Özeti</h5>
+                    <button type="button" id="btnClosePreview" class="btn btn-sm btn-outline-secondary rounded-pill">Kapat</button>
+                </div>
+                <pre id="evalPreviewText" class="p-3 bg-light rounded-3 border text-dark" style="white-space: pre-wrap; font-family: monospace; font-size: 0.92rem; max-height: 400px; overflow-y: auto; line-height: 1.6;"></pre>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <button type="button" id="btnDirectSendFromPreview" class="btn btn-success rounded-pill px-4 fw-bold">
+                        <i class="fab fa-whatsapp me-2"></i> WhatsApp'ta Aç ve Gönder
+                    </button>
+                    <button type="button" id="btnCopyText" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="fa fa-copy me-2"></i> Metni Kopyala
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Banner End -->
+
+    <style>
+        .custom-opt-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 1.5px solid #d3e0e1;
+            border-radius: 9px;
+            background: #f8fafc;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            user-select: none;
+            margin: 0;
+        }
+        .custom-opt-btn:hover {
+            border-color: #0f5565;
+            background: #f1f5f9;
+        }
+        .custom-opt-btn input {
+            accent-color: #0f5565;
+            width: 17px;
+            height: 17px;
+            margin: 0;
+        }
+        .custom-opt-btn.is-active,
+        .custom-opt-btn:has(input:checked) {
+            border-color: #0f5565;
+            background: #e2eeef;
+            color: #0f5565;
+            font-weight: 600;
+        }
+        .form-group-item.has-error input {
+            border-color: #dc3545 !important;
+        }
+        .form-group-item.has-error .invalid-feedback {
+            display: block;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('heatPumpEvalForm');
+            const targetWhatsapp = "{{ $targetWhatsapp }}";
+
+            // Dinamik alan gizleme/gösterme
+            function syncConditions() {
+                // dagitim -> petek
+                const dagitim = form.querySelector('input[name="dagitim"]:checked');
+                const dagitimVal = dagitim ? dagitim.value : '';
+                const fieldPetek = document.getElementById('field_petek');
+                if (fieldPetek) {
+                    const showPetek = /Radyatör|İkisi/.test(dagitimVal);
+                    fieldPetek.classList.toggle('d-none', !showPetek);
+                }
+
+                // mod -> fancoil
+                const mod = form.querySelector('input[name="mod"]:checked');
+                const modVal = mod ? mod.value : '';
+                const fieldFancoil = document.getElementById('field_fancoil');
+                if (fieldFancoil) {
+                    const showFancoil = /soğutma/.test(modVal);
+                    fieldFancoil.classList.toggle('d-none', !showFancoil);
+                }
+
+                // yogun -> yogunnot
+                const yogun = form.querySelector('input[name="yogun"]:checked');
+                const yogunVal = yogun ? yogun.value : '';
+                const fieldYogunnot = document.getElementById('field_yogunnot');
+                if (fieldYogunnot) {
+                    const showYogunnot = (yogunVal === 'Evet');
+                    fieldYogunnot.classList.toggle('d-none', !showYogunnot);
+                }
+            }
+
+            form.addEventListener('change', syncConditions);
+            form.addEventListener('input', syncConditions);
+            syncConditions();
+
+            // Seçim butonlarını aktif renkle işaretleme
+            form.querySelectorAll('.custom-opt-btn input').forEach(input => {
+                input.addEventListener('change', function() {
+                    if (this.type === 'radio') {
+                        form.querySelectorAll(`input[name="${this.name}"]`).forEach(r => {
+                            r.closest('.custom-opt-btn')?.classList.toggle('is-active', r.checked);
+                        });
+                    } else {
+                        this.closest('.custom-opt-btn')?.classList.toggle('is-active', this.checked);
+                    }
+                });
+            });
+
+            // WhatsApp Mesaj Formatı
+            function buildWhatsappMessage() {
+                const ad = (document.getElementById('eval_ad')?.value || '').trim();
+                const tel = (document.getElementById('eval_tel')?.value || '').trim();
+                const adres = (document.getElementById('eval_adres')?.value || '').trim();
+
+                const m2 = (document.getElementById('eval_m2')?.value || '').trim();
+                const sehir = (document.getElementById('eval_sehir')?.value || '').trim();
+                
+                const yalitim = Array.from(form.querySelectorAll('input[name="yalitim"]:checked')).map(c => c.value).join(', ');
+                const kat = form.querySelector('input[name="kat"]:checked')?.value || '';
+                const tavan = form.querySelector('input[name="tavan"]:checked')?.value || '';
+
+                const dagitim = form.querySelector('input[name="dagitim"]:checked')?.value || '';
+                const petek = Array.from(form.querySelectorAll('input[name="petek"]:checked')).map(c => c.value).join(', ');
+                const mod = form.querySelector('input[name="mod"]:checked')?.value || '';
+                const fancoil = form.querySelector('input[name="fancoil"]:checked')?.value || '';
+
+                const kisi = (document.getElementById('eval_kisi')?.value || '').trim();
+                const skw = form.querySelector('input[name="skw"]:checked')?.value || '';
+                const yogun = form.querySelector('input[name="yogun"]:checked')?.value || '';
+                const yogunnot = (document.getElementById('eval_yogunnot')?.value || '').trim();
+
+                const elk = form.querySelector('input[name="elk"]:checked')?.value || '';
+                const dis = form.querySelector('input[name="dis"]:checked')?.value || '';
+                const mevcut = Array.from(form.querySelectorAll('input[name="mevcut"]:checked')).map(c => c.value).join(', ');
+
+                let msg = "📋 *ISI POMPASI ÖN DEĞERLENDİRME FORMU*\n";
+                msg += "━━━━━━━━━━━━━━━━━━━━\n\n";
+
+                msg += "👤 *MÜŞTERİ BİLGİLERİ*\n";
+                msg += "• *Ad Soyad:* " + (ad || 'Belirtilmedi') + "\n";
+                msg += "• *Telefon:* " + (tel || 'Belirtilmedi') + "\n";
+                if (adres) msg += "• *Adres:* " + adres + "\n";
+                msg += "\n";
+
+                msg += "🏠 *1. BİNA VE YAPI ÖZELLİKLERİ*\n";
+                if (m2) msg += "• *Net Kullanım Alanı:* " + m2 + " m²\n";
+                if (sehir) msg += "• *Şehir / Bölge:* " + sehir + "\n";
+                if (yalitim) msg += "• *Yalıtım Durumu:* " + yalitim + "\n";
+                if (kat) msg += "• *Yapı Tipi / Kat:* " + kat + "\n";
+                if (tavan) msg += "• *Tavan Yüksekliği:* " + tavan + "\n";
+                msg += "\n";
+
+                msg += "🔥 *2. ISITMA & SOĞUTMA SİSTEMİ*\n";
+                if (dagitim) msg += "• *Dağıtım Türü:* " + dagitim + "\n";
+                if (petek && /Radyatör|İkisi/.test(dagitim)) msg += "• *Petek Türü:* " + petek + "\n";
+                if (mod) msg += "• *Çalışma Modu:* " + mod + "\n";
+                if (fancoil && /soğutma/.test(mod)) msg += "• *Fancoil Sistemi:* " + fancoil + "\n";
+                msg += "\n";
+
+                msg += "🚿 *3. KULLANIM SUYU (BOYLER) & TÜKETİM*\n";
+                if (kisi) msg += "• *Yaşayan Kişi Sayısı:* " + kisi + " kişi\n";
+                if (skw) msg += "• *Kullanım Sıcak Suyu:* " + skw + "\n";
+                if (yogun) msg += "• *Yoğun Sıcak Su (Jakuzi vb.):* " + yogun + "\n";
+                if (yogunnot && yogun === 'Evet') msg += "• *Yoğun Tüketim Detayı:* " + yogunnot + "\n";
+                msg += "\n";
+
+                msg += "⚡ *4. ALTYAPI VE KURULUM ALANI*\n";
+                if (elk) msg += "• *Elektrik Altyapısı:* " + elk + "\n";
+                if (dis) msg += "• *Dış Ünite Yeri:* " + dis + "\n";
+                if (mevcut) msg += "• *Mevcut Isıtma Sistemi:* " + mevcut + "\n";
+                msg += "\n";
+
+                msg += "━━━━━━━━━━━━━━━━━━━━\n";
+                msg += "_Bu talep UK Elektronik Isı Pompası Ön Değerlendirme Formu üzerinden gönderilmiştir._";
+
+                return msg;
+            }
+
+            // Doğrulama kontrolü
+            function validateForm() {
+                let valid = true;
+                form.querySelectorAll('[data-req="1"]').forEach(item => {
+                    const input = item.querySelector('input');
+                    const val = input ? input.value.trim() : '';
+                    if (!val) {
+                        item.classList.add('has-error');
+                        valid = false;
+                    } else {
+                        item.classList.remove('has-error');
+                    }
+                });
+                if (!valid) {
+                    const firstError = form.querySelector('.has-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.querySelector('input')?.focus();
+                    }
+                }
+                return valid;
+            }
+
+            // WhatsApp'a yönlendirme
+            function sendToWhatsapp() {
+                if (!validateForm()) return;
+                const text = buildWhatsappMessage();
+                const url = "https://api.whatsapp.com/send?phone=" + targetWhatsapp + "&text=" + encodeURIComponent(text);
+                window.open(url, '_blank');
+            }
+
+            document.getElementById('btnSendWhatsapp')?.addEventListener('click', sendToWhatsapp);
+            document.getElementById('btnDirectSendFromPreview')?.addEventListener('click', sendToWhatsapp);
+
+            // Önizleme
+            document.getElementById('btnPreviewModal')?.addEventListener('click', function() {
+                if (!validateForm()) return;
+                const text = buildWhatsappMessage();
+                const previewBox = document.getElementById('evalPreviewBox');
+                const previewText = document.getElementById('evalPreviewText');
+                if (previewText) previewText.textContent = text;
+                if (previewBox) {
+                    previewBox.classList.remove('d-none');
+                    previewBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            document.getElementById('btnClosePreview')?.addEventListener('click', function() {
+                document.getElementById('evalPreviewBox')?.classList.add('d-none');
+            });
+
+            // Metni Kopyala
+            document.getElementById('btnCopyText')?.addEventListener('click', async function() {
+                const text = document.getElementById('evalPreviewText')?.textContent || '';
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const orig = this.innerHTML;
+                    this.innerHTML = '<i class="fa fa-check me-2 text-success"></i> Kopyalandı!';
+                    setTimeout(() => this.innerHTML = orig, 2000);
+                } catch (e) {
+                    alert('Metin seçildi, lütfen kopyalayınız.');
+                }
+            });
+        });
+    </script>
+    <!-- Isı Pompası Ön Değerlendirme Formu End -->
 
     <!-- FAQ Heat Pump Start -->
     <div class="container-xxl py-5">
