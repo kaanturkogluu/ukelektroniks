@@ -302,7 +302,7 @@
         }
     @endphp
 
-    <div class="container-xxl py-5" id="onDegerlendirmeFormu">
+    <div class="container-xxl py-5" id="onDegerlendirmeFormu" style="scroll-margin-top: 110px;">
         <div class="container" style="max-width: 860px;">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <span class="badge bg-primary px-3 py-2 rounded-pill text-uppercase fw-bold mb-2">Hızlı & Kolay Keşif</span>
@@ -628,6 +628,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Hash ile gelindiyse forma yumusak kaydirma
+            if (window.location.hash === '#onDegerlendirmeFormu') {
+                setTimeout(function() {
+                    const el = document.getElementById('onDegerlendirmeFormu');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 250);
+            }
+
             const form = document.getElementById('heatPumpEvalForm');
             const targetWhatsapp = "{{ $targetWhatsapp }}";
 

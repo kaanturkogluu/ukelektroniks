@@ -26,14 +26,14 @@
                         </p>
 
                         <div class="d-flex flex-wrap justify-content-center gap-3 animated fadeInUp">
-                            <a href="{{ route('isi-pompasi') }}" class="btn btn-warning rounded-pill py-3 px-4 px-md-5 fw-bold shadow-lg hero-cta-btn">
-                                <i class="fa fa-fire-alt me-2"></i> Isı Pompası Sistemleri
+                            <a href="{{ route('isi-pompasi') }}#onDegerlendirmeFormu" class="btn btn-warning rounded-pill py-3 px-4 px-md-5 fw-bold shadow-lg hero-cta-btn" style="background-color: #ffc107; border-color: #ffc107; color: #111;">
+                                <i class="fa fa-clipboard-list me-2"></i> Isı Pompası Bilgilendirme Formu
+                            </a>
+                            <a href="{{ route('ges.teklif') }}" class="btn btn-warning rounded-pill py-3 px-4 px-md-5 fw-bold shadow-lg hero-cta-btn" style="background-color: #ff9800; border-color: #ff9800; color: #fff;">
+                                <i class="fa fa-solar-panel me-2"></i> GES Teklif Formu
                             </a>
                             <a href="{{ route('products') }}" class="btn btn-outline-light rounded-pill py-3 px-4 px-md-5 fw-semibold hero-cta-btn" style="backdrop-filter: blur(4px);">
                                 <i class="fa fa-boxes me-2"></i> Ürünlerimiz
-                            </a>
-                            <a href="{{ route('ges.teklif') }}" class="btn btn-warning rounded-pill py-3 px-4 px-md-5 fw-bold shadow-lg hero-cta-btn" style="background-color: #ffc107; border-color: #ffc107; color: #111;">
-                                <i class="fa fa-solar-panel me-2"></i> GES Teklif Formu
                             </a>
                             <a href="{{ route('contact') }}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 fw-semibold hero-cta-btn">
                                 <i class="fa fa-phone-alt me-2"></i> Bize Ulaşın
