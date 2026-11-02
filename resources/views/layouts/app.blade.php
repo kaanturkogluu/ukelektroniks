@@ -53,7 +53,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="{{ request()->routeIs('home') ? 'is-home' : 'subpage' }}">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -77,226 +77,220 @@
     </script>
     <!-- Spinner End -->
 
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-dark p-0 fixed-top d-none d-lg-block" style="z-index: 10000; background: rgba(0, 0, 0, 0.7) !important; backdrop-filter: blur(10px); height: 45px; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;">
-        <div class="row gx-0 h-100">
-            <div class="col-lg-8 px-5 text-start">
-                @php
-                    $displayPhone = \App\Models\Setting::get('display_phone');
-                    $displayPhoneType = 'phone';
-                    if (empty($displayPhone)) {
-                        $phonesJson = \App\Models\Setting::get('phones', '[]');
-                        $phones = is_string($phonesJson) ? json_decode($phonesJson, true) : [];
-                        if (!empty($phones)) {
-                            $firstPhone = is_array($phones[0]) ? $phones[0] : ['number' => $phones[0], 'type' => 'phone'];
-                            $displayPhone = $firstPhone['number'] ?? $firstPhone;
-                            $displayPhoneType = $firstPhone['type'] ?? 'phone';
-                        } else {
-                            $displayPhone = '+90 (212) 123 45 67';
-                        }
-                    } else {
-                        // Find phone type from phones array
-                        $phonesJson = \App\Models\Setting::get('phones', '[]');
-                        $phones = is_string($phonesJson) ? json_decode($phonesJson, true) : [];
-                        foreach($phones as $phone) {
-                            $phoneNumber = is_array($phone) ? ($phone['number'] ?? '') : $phone;
-                            if ($phoneNumber == $displayPhone) {
-                                $displayPhoneType = is_array($phone) ? ($phone['type'] ?? 'phone') : 'phone';
-                                break;
-                            }
-                        }
-                    }
-                @endphp
-                <div class="h-100 d-inline-flex align-items-center me-4">
-                    @if($displayPhoneType === 'whatsapp')
-                    <small class="fab fa-whatsapp text-primary me-2"></small>
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $displayPhone) }}" target="_blank" class="text-white text-decoration-none contact-link-topbar" title="WhatsApp ile iletişime geçin">
-                        <small>{{ $displayPhone }}</small>
-                    </a>
-                    @else
-                    <small class="fa fa-phone-alt text-primary me-2"></small>
-                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $displayPhone) }}" class="text-white text-decoration-none contact-link-topbar" title="Aramak için tıklayın">
-                        <small>{{ $displayPhone }}</small>
-                    </a>
-                    @endif
-                </div>
-                @php
-                    $displayEmail = \App\Models\Setting::get('display_email');
-                    if (empty($displayEmail)) {
-                        $emailsJson = \App\Models\Setting::get('emails', '[]');
-                        $emails = is_string($emailsJson) ? json_decode($emailsJson, true) : [];
-                        $displayEmail = !empty($emails) ? $emails[0] : 'info@ukelektronik.com';
-                    }
-                @endphp
-                <div class="h-100 d-inline-flex align-items-center me-4">
-                    <small class="fa fa-envelope text-primary me-2"></small>
-                    <a href="mailto:{{ $displayEmail }}" class="text-white text-decoration-none contact-link-topbar" title="E-posta göndermek için tıklayın">
-                        <small>{{ $displayEmail }}</small>
-                    </a>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center">
-                    <a href="{{ route('datacenter') }}" class="text-white text-decoration-none me-3" style="font-size: 0.875rem;">{{ __('common.datacenter') }}</a>
-                </div>
-            </div>
-            <div class="col-lg-4 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center me-4">
-                    <form action="{{ route('lang.switch') }}" method="GET" id="languageForm" style="display: inline;">
-                        <input type="hidden" name="redirect" value="{{ url()->current() }}">
-                        <select class="form-select form-select-sm border-0 bg-transparent text-white topbar-language-select" 
-                                name="locale" 
-                                id="languageSelect"
-                                onchange="document.getElementById('languageForm').submit();"
-                                style="width: auto; padding: 0.25rem 2rem 0.25rem 0.5rem; font-size: 0.875rem; color: white !important;">
-                            <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.turkish') }}</option>
-                            <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.english') }}</option>
-                        </select>
-                    </form>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    @php
-                        $facebook = \App\Models\Setting::get('facebook');
-                        $twitter = \App\Models\Setting::get('twitter');
-                        $linkedin = \App\Models\Setting::get('linkedin');
-                        $instagram = \App\Models\Setting::get('instagram');
-                    @endphp
-                    @if($facebook)
-                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary text-white" href="{{ $facebook }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-facebook-f"></i></a>
-                    @endif
-                    @if($twitter)
-                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary text-white" href="{{ $twitter }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-twitter"></i></a>
-                    @endif
-                    @if($linkedin)
-                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary text-white" href="{{ $linkedin }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-linkedin-in"></i></a>
-                    @endif
-                    @if($instagram)
-                    <a class="btn btn-square btn-link rounded-0 text-white" href="{{ $instagram }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-instagram"></i></a>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top p-0 navbar-mobile" style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); z-index: 9999; transition: all 0.3s; position: fixed !important; left: 0 !important; right: 0 !important;">
-        <div class="container-fluid">
-            <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                <img src="{{ asset('uklogo.png') }}" alt="UK Elektronik Solar Enerji" class="navbar-logo" style="max-height: 60px; width: auto;">
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" style="border-color: rgba(255, 255, 255, 0.5);">
-                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav mx-auto p-2 p-lg-0">
-                    <a href="{{ route('home') }}" class="nav-item nav-link text-white {{ request()->routeIs('home') ? 'active' : '' }}" style="color: white !important; font-weight: 500;">{{ __('common.home') }}</a>
-                    <a href="{{ route('about') }}" class="nav-item nav-link text-white {{ request()->routeIs('about') ? 'active' : '' }}" style="color: white !important; font-weight: 500;">{{ __('common.about') }}</a>
-                    <a href="{{ route('service') }}" class="nav-item nav-link text-white {{ request()->routeIs('service') ? 'active' : '' }}" style="color: white !important; font-weight: 500;">{{ __('common.services') }}</a>
-                    <a href="{{ route('products') }}" class="nav-item nav-link text-white {{ request()->routeIs('products') ? 'active' : '' }}" style="color: white !important; font-weight: 500;">{{ __('common.products') }}</a>
-                    <a href="{{ route('faq') }}" class="nav-item nav-link text-white {{ request()->routeIs('faq') ? 'active' : '' }}" style="color: white !important; font-weight: 500;">SSS</a>
-                    <a href="{{ route('contact') }}" class="nav-item nav-link text-white {{ request()->routeIs('contact') ? 'active' : '' }}" style="color: white !important; font-weight: 500;">{{ __('common.contact') }}</a>
-                </div>
-                {{-- Enerji hesaplama geçici kapalı
-                <a href="{{ route('quote') }}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Enerji Hesaplama<i class="fa fa-arrow-right ms-3"></i></a>
-                --}}
-                
-                <!-- Mobile Topbar Content -->
-                <div class="d-lg-none border-top border-secondary mt-2 pt-2 px-3 pb-2">
-                    @php
-                        $displayPhone = \App\Models\Setting::get('display_phone');
-                        $displayPhoneType = 'phone';
-                        if (empty($displayPhone)) {
-                            $phonesJson = \App\Models\Setting::get('phones', '[]');
-                            $phones = is_string($phonesJson) ? json_decode($phonesJson, true) : [];
-                            if (!empty($phones)) {
-                                $firstPhone = is_array($phones[0]) ? $phones[0] : ['number' => $phones[0], 'type' => 'phone'];
-                                $displayPhone = $firstPhone['number'] ?? $firstPhone;
-                                $displayPhoneType = $firstPhone['type'] ?? 'phone';
+        <!-- CW Enerji Style Header Start -->
+    <header class="cw-header fixed-top" id="cwMainHeader">
+        <!-- Topbar Start -->
+        <div class="cw-topbar d-none d-lg-block">
+            <div class="container-fluid px-5">
+                <div class="row gx-0 align-items-center" style="height: 40px;">
+                    <div class="col-lg-8 text-start d-flex align-items-center">
+                        @php
+                            $displayPhone = \App\Models\Setting::get('display_phone');
+                            $displayPhoneType = 'phone';
+                            if (empty($displayPhone)) {
+                                $phonesJson = \App\Models\Setting::get('phones', '[]');
+                                $phones = is_string($phonesJson) ? json_decode($phonesJson, true) : [];
+                                if (!empty($phones)) {
+                                    $firstPhone = is_array($phones[0]) ? $phones[0] : ['number' => $phones[0], 'type' => 'phone'];
+                                    $displayPhone = $firstPhone['number'] ?? $firstPhone;
+                                    $displayPhoneType = $firstPhone['type'] ?? 'phone';
+                                } else {
+                                    $displayPhone = '+90 (212) 123 45 67';
+                                }
                             } else {
-                                $displayPhone = '+90 (212) 123 45 67';
-                            }
-                        } else {
-                            $phonesJson = \App\Models\Setting::get('phones', '[]');
-                            $phones = is_string($phonesJson) ? json_decode($phonesJson, true) : [];
-                            foreach($phones as $phone) {
-                                $phoneNumber = is_array($phone) ? ($phone['number'] ?? '') : $phone;
-                                if ($phoneNumber == $displayPhone) {
-                                    $displayPhoneType = is_array($phone) ? ($phone['type'] ?? 'phone') : 'phone';
-                                    break;
+                                $phonesJson = \App\Models\Setting::get('phones', '[]');
+                                $phones = is_string($phonesJson) ? json_decode($phonesJson, true) : [];
+                                foreach($phones as $phone) {
+                                    $phoneNumber = is_array($phone) ? ($phone['number'] ?? '') : $phone;
+                                    if ($phoneNumber == $displayPhone) {
+                                        $displayPhoneType = is_array($phone) ? ($phone['type'] ?? 'phone') : 'phone';
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    @endphp
-                    <div class="mb-2">
-                        @if($displayPhoneType === 'whatsapp')
-                        <small class="fab fa-whatsapp text-primary me-2"></small>
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $displayPhone) }}" target="_blank" class="text-white text-decoration-none" style="font-size: 0.875rem;">
-                            <small>{{ $displayPhone }}</small>
-                        </a>
-                        @else
-                        <small class="fa fa-phone-alt text-primary me-2"></small>
-                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $displayPhone) }}" class="text-white text-decoration-none" style="font-size: 0.875rem;">
-                            <small>{{ $displayPhone }}</small>
-                        </a>
-                        @endif
-                    </div>
-                    @php
-                        $displayEmail = \App\Models\Setting::get('display_email');
-                        if (empty($displayEmail)) {
-                            $emailsJson = \App\Models\Setting::get('emails', '[]');
-                            $emails = is_string($emailsJson) ? json_decode($emailsJson, true) : [];
-                            $displayEmail = !empty($emails) ? $emails[0] : 'info@ukelektronik.com';
-                        }
-                    @endphp
-                    <div class="mb-2">
-                        <small class="fa fa-envelope text-primary me-2"></small>
-                        <a href="mailto:{{ $displayEmail }}" class="text-white text-decoration-none" style="font-size: 0.875rem;">
-                            <small>{{ $displayEmail }}</small>
-                        </a>
-                    </div>
-                    <div class="mb-2">
-                        <a href="{{ route('datacenter') }}" class="text-white text-decoration-none" style="font-size: 0.875rem;">{{ __('common.datacenter') }}</a>
-                    </div>
-                    <div class="mb-2">
-                        <form action="{{ route('lang.switch') }}" method="GET" id="languageFormMobile" style="display: inline;">
-                            <input type="hidden" name="redirect" value="{{ url()->current() }}">
-                            <select class="form-select form-select-sm border-0 bg-transparent text-white" 
-                                    name="locale" 
-                                    id="languageSelectMobile"
-                                    onchange="document.getElementById('languageFormMobile').submit();"
-                                    style="width: auto; padding: 0.25rem 2rem 0.25rem 0.5rem; font-size: 0.875rem; color: white !important;">
-                                <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.turkish') }}</option>
-                                <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.english') }}</option>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="d-flex gap-2">
-                        @php
-                            $facebook = \App\Models\Setting::get('facebook');
-                            $twitter = \App\Models\Setting::get('twitter');
-                            $linkedin = \App\Models\Setting::get('linkedin');
-                            $instagram = \App\Models\Setting::get('instagram');
                         @endphp
-                        @if($facebook)
-                        <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $facebook }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-facebook-f"></i></a>
-                        @endif
-                        @if($twitter)
-                        <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $twitter }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-twitter"></i></a>
-                        @endif
-                        @if($linkedin)
-                        <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $linkedin }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-linkedin-in"></i></a>
-                        @endif
-                        @if($instagram)
-                        <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $instagram }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-instagram"></i></a>
-                        @endif
+                        <div class="d-inline-flex align-items-center me-4">
+                            @if($displayPhoneType === 'whatsapp')
+                            <small class="fab fa-whatsapp text-primary me-2"></small>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $displayPhone) }}" target="_blank" class="text-white text-decoration-none contact-link-topbar" title="WhatsApp ile iletişime geçin">
+                                <small>{{ $displayPhone }}</small>
+                            </a>
+                            @else
+                            <small class="fa fa-phone-alt text-primary me-2"></small>
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $displayPhone) }}" class="text-white text-decoration-none contact-link-topbar" title="Aramak için tıklayın">
+                                <small>{{ $displayPhone }}</small>
+                            </a>
+                            @endif
+                        </div>
+                        @php
+                            $displayEmail = \App\Models\Setting::get('display_email');
+                            if (empty($displayEmail)) {
+                                $emailsJson = \App\Models\Setting::get('emails', '[]');
+                                $emails = is_string($emailsJson) ? json_decode($emailsJson, true) : [];
+                                $displayEmail = !empty($emails) ? $emails[0] : 'info@ukelektronik.com';
+                            }
+                        @endphp
+                        <div class="d-inline-flex align-items-center me-4">
+                            <small class="fa fa-envelope text-primary me-2"></small>
+                            <a href="mailto:{{ $displayEmail }}" class="text-white text-decoration-none contact-link-topbar" title="E-posta göndermek için tıklayın">
+                                <small>{{ $displayEmail }}</small>
+                            </a>
+                        </div>
+                        <div class="d-inline-flex align-items-center">
+                            <a href="{{ route('datacenter') }}" class="text-white text-decoration-none me-3" style="font-size: 0.875rem;">{{ __('common.datacenter') }}</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-end d-flex align-items-center justify-content-end">
+                        <div class="d-inline-flex align-items-center me-4">
+                            <form action="{{ route('lang.switch') }}" method="GET" id="languageForm" style="display: inline;">
+                                <input type="hidden" name="redirect" value="{{ url()->current() }}">
+                                <select class="form-select form-select-sm border-0 bg-transparent text-white topbar-language-select" 
+                                        name="locale" 
+                                        id="languageSelect"
+                                        onchange="document.getElementById('languageForm').submit();"
+                                        style="width: auto; padding: 0.25rem 2rem 0.25rem 0.5rem; font-size: 0.875rem; color: white !important;">
+                                    <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.turkish') }}</option>
+                                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.english') }}</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="d-inline-flex align-items-center">
+                            @php
+                                $facebook = \App\Models\Setting::get('facebook');
+                                $twitter = \App\Models\Setting::get('twitter');
+                                $linkedin = \App\Models\Setting::get('linkedin');
+                                $instagram = \App\Models\Setting::get('instagram');
+                            @endphp
+                            @if($facebook)
+                            <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary text-white" href="{{ $facebook }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-facebook-f"></i></a>
+                            @endif
+                            @if($twitter)
+                            <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary text-white" href="{{ $twitter }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-twitter"></i></a>
+                            @endif
+                            @if($linkedin)
+                            <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary text-white" href="{{ $linkedin }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-linkedin-in"></i></a>
+                            @endif
+                            @if($instagram)
+                            <a class="btn btn-square btn-link rounded-0 text-white" href="{{ $instagram }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-instagram"></i></a>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
-    <!-- Navbar End -->
+        <!-- Topbar End -->
 
-    <!-- Content wrapper with padding for fixed navbar -->
-    <div class="content-wrapper" style="padding-top: 105px;">
+        <!-- Centered Logo Area (CW Enerji Style) -->
+        <div class="cw-toplogo text-center py-2 d-none d-lg-block">
+            <div class="container d-flex flex-column align-items-center justify-content-center">
+                <a href="{{ route('home') }}" class="cw-toplogo-brand d-inline-flex flex-column align-items-center text-decoration-none">
+                    <img src="{{ asset('uklogo.png') }}" alt="UK Elektronik Güneş Enerjisi" class="cw-logo-img">
+                    <span class="cw-logo-slogan">Güneşten Elektrik</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Navbar (Centered Navigation) -->
+        <nav class="navbar navbar-expand-lg navbar-dark cw-navbar p-0">
+            <div class="container position-relative">
+                <!-- Mobile Brand in Center (visible only on mobile) -->
+                <a href="{{ route('home') }}" class="navbar-brand d-lg-none mx-auto d-flex flex-column align-items-center py-2">
+                    <img src="{{ asset('uklogo.png') }}" alt="UK Elektronik" style="max-height: 48px; width: auto;">
+                    <span style="font-size: 9px; letter-spacing: 2px; color: #ffc107; font-weight: 700; text-transform: uppercase;">Güneşten Elektrik</span>
+                </a>
+
+                <button type="button" class="navbar-toggler position-absolute end-0 me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Menüyü Aç/Kapat" style="border-color: rgba(255, 255, 255, 0.5);">
+                    <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
+                        <li class="nav-item">
+                            <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">{{ __('common.home') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">{{ __('common.about') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('service') }}" class="nav-link {{ request()->routeIs('service*') ? 'active' : '' }}">{{ __('common.services') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('isi-pompasi') }}" class="nav-link {{ request()->routeIs('isi-pompasi*') ? 'active' : '' }}" style="position: relative;">
+                                {{ __('common.heat_pump') }}
+                                <span class="badge bg-warning text-dark ms-1 d-none d-xl-inline-block" style="font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; vertical-align: middle;">YENİ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('products') }}" class="nav-link {{ request()->routeIs('products*') ? 'active' : '' }}">{{ __('common.products') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('faq') }}" class="nav-link {{ request()->routeIs('faq') ? 'active' : '' }}">SSS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">{{ __('common.contact') }}</a>
+                        </li>
+                    </ul>
+
+                    <!-- Mobile Topbar Content inside Collapse -->
+                    <div class="d-lg-none border-top border-secondary mt-2 pt-3 px-3 pb-2 text-center">
+                        <div class="mb-2">
+                            @if($displayPhoneType === 'whatsapp')
+                            <small class="fab fa-whatsapp text-primary me-2"></small>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $displayPhone) }}" target="_blank" class="text-white text-decoration-none" style="font-size: 0.875rem;">
+                                <small>{{ $displayPhone }}</small>
+                            </a>
+                            @else
+                            <small class="fa fa-phone-alt text-primary me-2"></small>
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $displayPhone) }}" class="text-white text-decoration-none" style="font-size: 0.875rem;">
+                                <small>{{ $displayPhone }}</small>
+                            </a>
+                            @endif
+                        </div>
+                        <div class="mb-2">
+                            <small class="fa fa-envelope text-primary me-2"></small>
+                            <a href="mailto:{{ $displayEmail }}" class="text-white text-decoration-none" style="font-size: 0.875rem;">
+                                <small>{{ $displayEmail }}</small>
+                            </a>
+                        </div>
+                        <div class="mb-2">
+                            <a href="{{ route('datacenter') }}" class="text-white text-decoration-none" style="font-size: 0.875rem;">{{ __('common.datacenter') }}</a>
+                        </div>
+                        <div class="mb-2">
+                            <form action="{{ route('lang.switch') }}" method="GET" id="languageFormMobile" style="display: inline;">
+                                <input type="hidden" name="redirect" value="{{ url()->current() }}">
+                                <select class="form-select form-select-sm border-0 bg-transparent text-white" 
+                                        name="locale" 
+                                        id="languageSelectMobile"
+                                        onchange="document.getElementById('languageFormMobile').submit();"
+                                        style="width: auto; padding: 0.25rem 2rem 0.25rem 0.5rem; font-size: 0.875rem; color: white !important; margin: 0 auto;">
+                                    <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.turkish') }}</option>
+                                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }} style="background-color: #333; color: white;">{{ __('common.english') }}</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="d-flex justify-content-center gap-2 mt-2">
+                            @if($facebook)
+                            <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $facebook }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-facebook-f"></i></a>
+                            @endif
+                            @if($twitter)
+                            <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $twitter }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-twitter"></i></a>
+                            @endif
+                            @if($linkedin)
+                            <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $linkedin }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-linkedin-in"></i></a>
+                            @endif
+                            @if($instagram)
+                            <a class="btn btn-square btn-link rounded-0 border-0 text-white" href="{{ $instagram }}" target="_blank" style="color: white !important; padding: 0.5rem;"><i class="fab fa-instagram"></i></a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- CW Enerji Style Header End -->
+
+    <!-- Content wrapper -->
+    <div class="content-wrapper {{ request()->routeIs('home') ? 'home-wrapper' : 'subpage-wrapper' }}">
         @yield('content')
     </div>
 
@@ -551,6 +545,144 @@
             }
         }
     </style>
+    <!-- CW Header & Entrance Enhancements -->
+    <style>
+        /* CW Enerji Header Styling */
+        .cw-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 10000;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(180deg, rgba(8, 14, 26, 0.88) 0%, rgba(8, 14, 26, 0.5) 75%, transparent 100%);
+        }
+
+        body.subpage .cw-header,
+        .cw-header.header-scrolled {
+            background: rgba(10, 16, 28, 0.96) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.45);
+        }
+
+        .cw-topbar {
+            max-height: 45px;
+            opacity: 1;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cw-header.header-scrolled .cw-topbar {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding: 0 !important;
+            border-bottom: none;
+        }
+
+        .cw-toplogo {
+            transition: all 0.3s ease;
+        }
+
+        .cw-logo-img {
+            max-height: 65px;
+            width: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+        }
+
+        .cw-header.header-scrolled .cw-logo-img {
+            max-height: 44px;
+        }
+
+        .cw-logo-slogan {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #ffc107;
+            text-transform: uppercase;
+            margin-top: 3px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            transition: all 0.25s ease;
+        }
+
+        .cw-header.header-scrolled .cw-logo-slogan {
+            opacity: 0;
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .cw-navbar {
+            transition: all 0.3s ease;
+        }
+
+        .cw-navbar .nav-link {
+            color: #ffffff !important;
+            font-size: 14.5px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            padding: 12px 18px !important;
+            margin: 0 2px;
+            border-radius: 6px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .cw-navbar .nav-link:hover,
+        .cw-navbar .nav-link.active {
+            color: #ffc107 !important;
+            background: rgba(255, 193, 7, 0.1);
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Content wrapper padding */
+        .content-wrapper.home-wrapper {
+            padding-top: 0 !important;
+        }
+
+        .content-wrapper.subpage-wrapper {
+            padding-top: 170px !important;
+        }
+
+        @media (max-width: 991.98px) {
+            .cw-header {
+                background: rgba(10, 16, 28, 0.97) !important;
+                backdrop-filter: blur(12px);
+                box-shadow: 0 2px 15px rgba(0,0,0,0.4);
+            }
+            .content-wrapper.subpage-wrapper {
+                padding-top: 85px !important;
+            }
+            .content-wrapper.home-wrapper {
+                padding-top: 70px !important;
+            }
+            .cw-navbar .nav-link {
+                padding: 10px 14px !important;
+            }
+        }
+    </style>
+
+    <script>
+        (function($) {
+            "use strict";
+            function handleCwHeader() {
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > 40) {
+                    $('#cwMainHeader').addClass('header-scrolled');
+                } else {
+                    $('#cwMainHeader').removeClass('header-scrolled');
+                }
+            }
+            $(window).on('scroll load resize', handleCwHeader);
+            handleCwHeader();
+        })(jQuery);
+    </script>
 </body>
 
 </html>

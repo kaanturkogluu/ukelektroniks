@@ -5,6 +5,7 @@ return [
     'home' => 'Home',
     'about' => 'About Us',
     'services' => 'Services',
+    'heat_pump' => 'Heat Pump',
     'products' => 'Products',
     'projects' => 'Projects',
     'blog' => 'Blog',
@@ -130,6 +131,7 @@ return [
     
     // Service Page
     'services' => 'Services',
+    'heat_pump' => 'Heat Pump',
     'renewable_energy_leader' => 'We Are Leaders in the Renewable Energy World',
     
     // Project Page

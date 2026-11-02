@@ -5,6 +5,7 @@ return [
     'home' => 'Ana Sayfa',
     'about' => 'Hakkımızda',
     'services' => 'Hizmetlerimiz',
+    'heat_pump' => 'Isı Pompası',
     'products' => 'Ürünler',
     'projects' => 'Projeler',
     'blog' => 'Blog',
@@ -130,6 +131,7 @@ return [
     
     // Service Page
     'services' => 'Hizmetler',
+    'heat_pump' => 'Isı Pompası',
     'renewable_energy_leader' => 'Yenilenebilir Enerji Dünyasında Öncüyüz',
     
     // Project Page

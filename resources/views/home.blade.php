@@ -3,49 +3,192 @@
 @section('title', 'Ana Sayfa - UK Elektronik')
 
 @section('content')
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0 wow fadeIn" data-wow-delay="0.1s" style="height: calc(100vh - 105px); overflow: hidden;">
-        <div class="owl-carousel header-carousel position-relative" style="height: calc(100vh - 105px);">
-            @forelse($sliders as $slider)
-            <div class="owl-carousel-item position-relative" data-dot="<img src='{{ str_starts_with($slider->image, 'http://') || str_starts_with($slider->image, 'https://') ? $slider->image : asset($slider->image) }}'>" style="height: calc(100vh - 105px);">
-                <img class="img-fluid" src="{{ str_starts_with($slider->image, 'http://') || str_starts_with($slider->image, 'https://') ? $slider->image : asset($slider->image) }}" alt="{{ $slider->title }}" {{ $loop->first ? 'fetchpriority=high' : 'loading=lazy' }} decoding="async" style="width: 100%; height: calc(100vh - 105px); object-fit: cover;">
-                <div class="owl-carousel-inner" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center;">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-2 text-white animated slideInDown">{{ $slider->title }}</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-3">{{ $slider->description }}</p>
-                                @if($slider->button_text && $slider->button_link && !str_contains($slider->button_link, 'quote'))
-                                <a href="{{ $slider->button_link }}" class="btn btn-primary rounded-pill py-3 px-5 animated slideInLeft">{{ $slider->button_text }}</a>
-                                @endif
+        <!-- Hero Video Entrance Start (cw-enerji style) -->
+    <div class="hero-video-wrapper position-relative overflow-hidden" id="heroEntrance">
+        <video class="hero-bg-video" autoplay muted loop playsinline poster="{{ asset('img/gp.webp') }}" preload="auto">
+            <source src="{{ asset('video/solar-hero.mp4') }}" type="video/mp4">
+        </video>
+        
+        <!-- Dark gradient overlay for readability -->
+        <div class="hero-video-overlay position-absolute w-100 h-100"></div>
+
+        <!-- Hero Content (Centered) -->
+        <div class="hero-content-inner position-relative text-center text-white d-flex align-items-center justify-content-center">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-11 col-lg-10 col-xl-9">
+                        <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 border border-white border-opacity-25 px-4 py-2 rounded-pill mb-4 animated fadeInDown" style="backdrop-filter: blur(8px);">
+                            <i class="fa fa-sun text-warning"></i>
+                            <span class="text-uppercase fw-bold text-warning" style="letter-spacing: 2.5px; font-size: 0.82rem;">UK ELEKTRONİK // GÜNEŞTEN ELEKTRİK</span>
+                        </div>
+
+                        <h1 class="hero-main-title display-3 fw-bold text-white mb-4 animated slideInDown">
+                            Geleceğin Enerjisini <span class="text-warning">Bugünden</span> Çatınıza Taşıyoruz
+                        </h1>
+
+                        <p class="hero-main-desc fs-5 text-white mb-5 pb-2 mx-auto animated fadeInUp">
+                            Güneş enerjisi sistemleri, yüksek verimli ısı pompaları, solar inverterler ve akıllı depolama çözümleriyle faturalarınızı sıfırlayın.
+                        </p>
+
+                        <div class="d-flex flex-wrap justify-content-center gap-3 animated fadeInUp">
+                            <a href="{{ route('isi-pompasi') }}" class="btn btn-warning rounded-pill py-3 px-4 px-md-5 fw-bold shadow-lg hero-cta-btn">
+                                <i class="fa fa-fire-alt me-2"></i> Isı Pompası Sistemleri
+                            </a>
+                            <a href="{{ route('products') }}" class="btn btn-outline-light rounded-pill py-3 px-4 px-md-5 fw-semibold hero-cta-btn" style="backdrop-filter: blur(4px);">
+                                <i class="fa fa-solar-panel me-2"></i> Ürünlerimiz
+                            </a>
+                            <a href="{{ route('contact') }}" class="btn btn-primary rounded-pill py-3 px-4 px-md-5 fw-semibold hero-cta-btn">
+                                <i class="fa fa-phone-alt me-2"></i> Bize Ulaşın
+                            </a>
+                        </div>
+
+                        <!-- Stats & Highlights -->
+                        <div class="row g-3 justify-content-center mt-5 pt-4 border-top border-white border-opacity-15 d-none d-md-flex">
+                            <div class="col-md-3">
+                                <h3 class="text-warning fw-bold mb-1">%75+</h3>
+                                <small class="text-white text-opacity-75">Isı Pompası Tasarrufu</small>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-warning fw-bold mb-1">A+++</h3>
+                                <small class="text-white text-opacity-75">Maksimum Verimlilik</small>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-warning fw-bold mb-1">365 Gün</h3>
+                                <small class="text-white text-opacity-75">Kesintisiz Sıcak Su & Isıtma</small>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-warning fw-bold mb-1">100%</h3>
+                                <small class="text-white text-opacity-75">Mühendislik Güvencesi</small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            @empty
-            <!-- Varsayılan slider (hiç slider yoksa) -->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='{{ asset('img/carousel-1.jpg') }}'>" style="height: calc(100vh - 105px);">
-                <img class="img-fluid" src="{{ asset('img/carousel-1.jpg') }}" alt="" style="width: 100%; height: calc(100vh - 105px); object-fit: cover;">
-                <div class="owl-carousel-inner" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center;">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-2 text-white animated slideInDown">{{ __('common.home') }}</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-3">{{ __('common.welcome_message') }}</p>
-                                <a href="{{ route('contact') }}" class="btn btn-primary rounded-pill py-3 px-5 animated slideInLeft">{{ __('common.contact') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforelse
         </div>
+
+        <!-- Scroll down indicator -->
+        <a href="#feature-section" class="hero-scroll-btn text-white text-decoration-none">
+            <i class="fa fa-chevron-down"></i>
+        </a>
     </div>
-    <!-- Carousel End -->
+    <!-- Hero Video Entrance End -->
+
+    <style>
+        .hero-video-wrapper {
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            max-height: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a101c;
+        }
+
+        .hero-bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .hero-video-overlay {
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: linear-gradient(180deg, rgba(8, 14, 26, 0.78) 0%, rgba(8, 14, 26, 0.42) 50%, rgba(8, 14, 26, 0.92) 100%);
+        }
+
+        .hero-content-inner {
+            z-index: 3;
+            width: 100%;
+            padding-top: 130px;
+            padding-bottom: 50px;
+        }
+
+        .hero-main-title {
+            font-weight: 800;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.65);
+            letter-spacing: -0.5px;
+        }
+
+        .hero-main-desc {
+            max-width: 780px;
+            opacity: 0.92;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+            line-height: 1.6;
+        }
+
+        .hero-cta-btn {
+            transition: all 0.3s ease;
+        }
+
+        .hero-cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
+        }
+
+        .hero-scroll-btn {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: heroBounce 2s infinite;
+        }
+
+        .hero-scroll-btn:hover {
+            background: rgba(255, 193, 7, 0.8);
+            color: #111 !important;
+        }
+
+        @keyframes heroBounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .hero-video-wrapper {
+                height: 90vh;
+                min-height: 540px;
+            }
+            .hero-content-inner {
+                padding-top: 70px;
+                padding-bottom: 40px;
+            }
+            .hero-main-title {
+                font-size: 2.1rem;
+            }
+            .hero-main-desc {
+                font-size: 1rem !important;
+            }
+        }
+    </style>
 
     <!-- Feature Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-5" id="feature-section">
         <div class="container">
             <div class="row g-5">
                 <div class="col-md-6 col-lg-3 wow fadeIn text-center" data-wow-delay="0.1s">

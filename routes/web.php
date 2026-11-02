@@ -76,6 +76,19 @@ Route::get('/service/{slug}', function ($slug) {
     return view('service-detail', ['service' => $serviceData, 'slug' => $slug]);
 })->name('service.detail');
 
+Route::get('/isi-pompasi', function () {
+    $category = ProductCategory::where('slug', 'isi-pompasi')->first();
+    $products = collect();
+    if ($category) {
+        $products = Product::where('category_id', $category->id)
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+    }
+    $ersutekPartner = Partner::where('name', 'Ersutek')->first();
+    return view('isi-pompasi', compact('category', 'products', 'ersutekPartner'));
+})->name('isi-pompasi');
+
 Route::get('/project', function () {
     $categorySlug = request()->query('category');
     
