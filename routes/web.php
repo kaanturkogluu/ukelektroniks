@@ -76,6 +76,10 @@ Route::get('/service/{slug}', function ($slug) {
     return view('service-detail', ['service' => $serviceData, 'slug' => $slug]);
 })->name('service.detail');
 
+Route::get('/kvkk', function () {
+    return view('kvkk');
+})->name('kvkk');
+
 Route::get('/ges-teklif-formu', function () {
     $rawWhatsapp = \App\Models\Setting::get('product_whatsapp', '+905053967070');
     $whatsappNumber = preg_replace('/[^0-9]/', '', $rawWhatsapp) ?: '905053967070';

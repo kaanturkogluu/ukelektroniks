@@ -545,6 +545,14 @@
                         Verdiğiniz yanıtlar düzenli bir rapor halinde <strong>WhatsApp</strong> üzerinden teknik ekibimize iletilir. Mühendislerimiz projenize en uygun cihazı ve fiyat teklifini hemen hazırlar.
                     </p>
                     
+                    <div class="form-check form-switch d-inline-block text-start mb-4">
+                        <input class="form-check-input" type="checkbox" id="eval_kvkk" checked required>
+                        <label class="form-check-label small text-muted" for="eval_kvkk">
+                            <strong>UK Elektronik KVKK Aydınlatma Metnini</strong> okudum, inceledim ve kabul ediyorum.
+                            <a href="#kvkkModal" data-bs-toggle="modal" data-bs-target="#kvkkModal" class="text-primary text-decoration-underline fw-semibold ms-1">Metni İnceleyin</a>
+                        </label>
+                    </div>
+
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <button type="button" id="btnSendWhatsapp" class="btn btn-success btn-lg rounded-pill px-5 py-3 fw-bold shadow">
                             <i class="fab fa-whatsapp fa-lg me-2"></i> WhatsApp ile Teklif Talebini Gönder
@@ -855,5 +863,7 @@
         </div>
     </div>
     <!-- FAQ End -->
+@include('partials.kvkk-modal')
+
 @endsection
 

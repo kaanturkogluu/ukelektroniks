@@ -380,6 +380,7 @@
                     <a class="btn btn-link" href="{{ route('project') }}">{{ __('common.projects') }}</a>
                     <a class="btn btn-link" href="{{ route('products') }}">{{ __('common.products') }}</a>
                     <a class="btn btn-link" href="{{ route('contact') }}">{{ __('common.contact') }}</a>
+                    <a class="btn btn-link" href="{{ route('kvkk') }}">KVKK Aydınlatma Metni</a>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5 class="text-white mb-4">{{ __('common.projects') }}</h5>

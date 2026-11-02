@@ -219,6 +219,10 @@
                                     <input class="form-check-input" type="checkbox" id="kvkk" required>
                                     <label class="form-check-label small" for="kvkk">
                                         <strong>UK Elektronik Solar Enerji KVKK Aydınlatma Metnini</strong> okudum, inceledim ve kişisel verilerimin teklif hazırlanması amacıyla işlenmesini onaylıyorum. <span class="text-danger">*</span>
+                                        <br>
+                                        <a href="#kvkkModal" data-bs-toggle="modal" data-bs-target="#kvkkModal" class="text-primary text-decoration-underline fw-semibold mt-1 d-inline-block">
+                                            <i class="fa fa-file-contract me-1"></i> KVKK Aydınlatma Metni’ni İnceleyin
+                                        </a>
                                     </label>
                                     <div class="text-danger small mt-1 d-none" id="kvkkErr">Devam etmek için KVKK metnini onaylamanız gerekmektedir.</div>
                                 </div>
@@ -344,6 +348,8 @@
             </div>
         </div>
     </div>
+@include('partials.kvkk-modal')
+
 @endsection
 
 @push('scripts')
@@ -733,6 +739,17 @@ Zonguldak:Alaplı,Çaycuma,Devrek,Ereğli,Gökçebey,Kilimli,Kozlu,Merkez
                 this.classList.remove('is-invalid');
             }
         });
+    });
+
+    document.getElementById('btnKvkkOnaylaModal')?.addEventListener('click', function() {
+        const kvkkCb = document.getElementById('kvkk');
+        if (kvkkCb) {
+            kvkkCb.checked = true;
+            document.getElementById('kvkkErr')?.classList.add('d-none');
+        }
+        const modalEl = document.getElementById('kvkkModal');
+        const modalInst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        modalInst.hide();
     });
 
     document.getElementById('kvkk')?.addEventListener('change', function() {
